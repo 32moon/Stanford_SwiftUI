@@ -17,7 +17,7 @@ class EmojiMemoryGame: ObservableObject { // - ObservableObject 프로토콜 : �
     // ObservableObjec를 사용하기 위해 @Published 를 사용: 변수의 값이 추가되거나 삭제 되었다는 것을 View가 알 수 있게 해준다.
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
-    static func createMemoryGame() -> MemoryGame<String> {
+    static func createMemoryGame() -> MemoryGame<String> { 
         let emojis: Array<String> = ["👻", "🎃", "🕷"]
         return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
             return emojis[pairIndex]
