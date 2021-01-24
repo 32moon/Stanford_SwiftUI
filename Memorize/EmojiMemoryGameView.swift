@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct EmojiMemoryGameView: View {
-    var viewModel: EmojiMemoryGame
+    // @ObservedObject 데이터 모델과 바인딩된 변경값을 받아 뷰를 다시 그림
+    @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
         // 원하는 설정을 스택처럼 쌓아서 작성할 수 있음(?)
@@ -30,7 +31,6 @@ struct EmojiMemoryGameView: View {
         }
         .padding()
         .foregroundColor(Color.orange)
-        .font(Font.largeTitle)
     }
 }
 
@@ -38,15 +38,32 @@ struct CardView: View {
     var card: MemoryGame<String>.Card
     
     var body: some View {
+        // GeometryReader:View가 포함된 부모뷰(컨테이너)의 크기를 기준으로 View의 frame 조절하는 방법
+        GeometryReader{ geometry in
+            self.body(for: geometry.size)
+        }
+    }
+    
+    func body(for size: CGSize) -> some View {
         ZStack {
-            if card.isFaceUP {
-                RoundedRectangle(cornerRadius: 10.0).fill(Color.white)
-                RoundedRectangle(cornerRadius: 10.0).stroke(lineWidth: 3)
-                Text(card.content)
+            if self.card.isFaceUP {
+                RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
+                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
+                Text(self.card.content)
             } else {
-                RoundedRectangle(cornerRadius: 10.0).fill(Color.orange)
+                RoundedRectangle(cornerRadius: cornerRadius).fill()
             }
         }
+        // 카드 자체가 폰트를 설정하도록 함.
+        .font(Font.system(size: fontSize(for: size)))
+    }
+    
+    // MARK: - Drawing Constants
+    // 여러 객체들을 구조체로 정리해 두는것이 좋음
+    let cornerRadius: CGFloat = 10.0
+    let edgeLineWidth: CGFloat = 3
+    func fontSize(for size: CGSize) -> CGFloat {
+        min(size.width, size.height) * 0.75
     }
 }
 
