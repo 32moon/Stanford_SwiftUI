@@ -19,17 +19,11 @@ struct MemoryGame<CardContent> { // generic type 선언
     // 카드가 뒤집어져 있는 상태로 만드는 함수
     mutating func choose(card: Card) {
         print("card chosen: \(card)")
-        let chosenIndex: Int = self.index(of: card)
+        if let chosenIndex = cards.firstIndex(matching: card) {
+            
+            
         self.cards[chosenIndex].isFaceUP = !self.cards[chosenIndex].isFaceUP
-    }
-    
-    func index(of card: Card) -> Int {
-        for index in 0 ..< self.cards.count {
-            if self.cards[index].id == card.id {
-                return index
-            }
         }
-        return 0 // TODO: bogus!
     }
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {

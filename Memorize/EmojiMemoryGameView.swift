@@ -5,6 +5,17 @@
 //  Created by 이문정 on 2021/01/04.
 //
 
+// 원하는 설정을 스택처럼 쌓아서 작성할 수 있음(?)
+// 함수의 호출 범위를 지정하여 수식을 변경할 수 있다.---> 수식어 적용 순서에 따라 달라짐
+// 수식어는 이전의 뷰를 감싼 새로운 뷰를 만들어 내고, 그다음 수식어는 다시 그 뷰를 감싼다.
+// 뷰 사이의 간격, 패딩은 표준으로 설정되어 있다.
+// return을 생략할 수 있다.
+// 중괄호를 생략할 수 있다, content 생략 가능
+// ZStack: 뷰 계층을 겹겹이 쌓아올리는 배열
+// HStack: 수평배열
+// VStack: 수직배열
+// swift의 변수는 항상 초기값을 가져야 한다.
+
 import SwiftUI
 
 struct EmojiMemoryGameView: View {
@@ -12,23 +23,13 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        // 원하는 설정을 스택처럼 쌓아서 작성할 수 있음(?)
-        // 함수의 호출 범위를 지정하여 수식을 변경할 수 있다.---> 수식어 적용 순서에 따라 달라짐
-        // 수식어는 이전의 뷰를 감싼 새로운 뷰를 만들어 내고, 그다음 수식어는 다시 그 뷰를 감싼다.
-        // 뷰 사이의 간격, 패딩은 표준으로 설정되어 있다.
-        // return을 생략할 수 있다.
-        // 중괄호를 생략할 수 있다, content 생략 가능
-        // ZStack: 뷰 계층을 겹겹이 쌓아올리는 배열
-        // HStack: 수평배열
-        // VStack: 수직배열
-        // swift의 변수는 항상 초기값을 가져야 한다.
-        HStack {
-            ForEach(viewModel.cards) { card in
+        
+        Grid(viewModel.cards) { card in
                 CardView(card: card).onTapGesture {
                     viewModel.choose(card: card)
                 }
+                .padding(5)
             }
-        }
         .padding()
         .foregroundColor(Color.orange)
     }
