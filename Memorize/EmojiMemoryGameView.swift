@@ -52,7 +52,10 @@ struct CardView: View {
                 RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
                 Text(self.card.content)
             } else {
+                // 카드가 매칭이 되면 사라진다.
+                if !card.isMatched {
                 RoundedRectangle(cornerRadius: cornerRadius).fill()
+                }
             }
         }
         // 카드 자체가 폰트를 설정하도록 함.
