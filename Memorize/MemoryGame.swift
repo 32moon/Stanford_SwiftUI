@@ -13,10 +13,10 @@ import Foundation
 
 //Equatable: 프로토콜을 준수하는 타입으로, 등호 연산자 == 또는 같지않음 연산자 != 를 사용하여 동등성을 비교할 수 있다.
 struct MemoryGame<CardContent> where CardContent: Equatable { // generic type 선언
-    var cards: Array<Card>
+    private(set) var cards: Array<Card>
    
     // 카드의 상태가 어떨지 알 수 없으므로 옵셔널변수로 해줌.
-    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         //index in cards = cards[$0]
         get { cards.indices.filter { cards[$0].isFaceUP }.only }
 //            for index in cards.indices {
