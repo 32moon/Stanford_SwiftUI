@@ -25,11 +25,11 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         
         Grid(viewModel.cards) { card in
-                CardView(card: card).onTapGesture {
-                    viewModel.choose(card: card)
-                }
-                .padding(5)
+            CardView(card: card).onTapGesture {
+                viewModel.choose(card: card)
             }
+            .padding(5)
+        }
         .padding()
         .foregroundColor(Color.orange)
     }
@@ -44,29 +44,26 @@ struct CardView: View {
             self.body(for: geometry.size)
         }
     }
-    
+    // ViewBuilder를 뷰의 목록으로 해석하게 되어 조건에 부합하지 않으면 뷰가 없는걸로 판단! EmptyView를 출력한다.
+    @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        ZStack {
-            if self.card.isFaceUP {
-                RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
-                Circle().padding(5).opacity(0.4)
+        if card.isFaceUP || !card.isMatched {
+            ZStack {
+                // iOS에서는 0도가 오른쪽 이다. 따라서 -90을 해줘야 정 중앙에서 호가 그려지기 시작한다.
+                // 드로잉 좌표 x, y 축이 반대로 되어있기 때문에 시계 반대방향을 원한다면 시계방향으로 설정해 주어야 한다.
+                Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true).padding(5).opacity(0.4)
                 Text(self.card.content)
-            } else {
-                // 카드가 매칭이 되면 사라진다.
-                if !card.isMatched {
-                RoundedRectangle(cornerRadius: cornerRadius).fill()
-                }
+                    // 카드 자체가 폰트를 설정하도록 함.
+                    .font(Font.system(size: fontSize(for: size)))
             }
+            // .modifier(Cardify(isFaceUp: card.isFaceUP))
+            .cardify(isFaceUp: card.isFaceUP) 
         }
-        // 카드 자체가 폰트를 설정하도록 함.
-        .font(Font.system(size: fontSize(for: size)))
     }
     
     // MARK: - Drawing Constants
     // 여러 객체들을 구조체로 정리해 두는것이 좋음
-    private let cornerRadius: CGFloat = 10.0
-    private let edgeLineWidth: CGFloat = 3
+    
     private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.7
     }
