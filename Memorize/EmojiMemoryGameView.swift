@@ -51,7 +51,10 @@ struct CardView: View {
             ZStack {
                 // iOS에서는 0도가 오른쪽 이다. 따라서 -90을 해줘야 정 중앙에서 호가 그려지기 시작한다.
                 // 드로잉 좌표 x, y 축이 반대로 되어있기 때문에 시계 반대방향을 원한다면 시계방향으로 설정해 주어야 한다.
-                Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true).padding(5).opacity(0.4)
+                Pie(startAngle: Angle.degrees(0-90),
+                    endAngle: Angle.degrees(110-90),
+                    clockwise: true)
+                    .padding(5).opacity(0.4)
                 Text(self.card.content)
                     // 카드 자체가 폰트를 설정하도록 함.
                     .font(Font.system(size: fontSize(for: size)))
